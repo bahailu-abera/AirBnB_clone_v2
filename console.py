@@ -142,8 +142,8 @@ class HBNBCommand(cmd.Cmd):
 
             if value[0] == '"' and value[-1] == '"':
                 value = value[1:-1]
-                value.replace('"', '\\"')
-                value.replace('_', ' ')
+                value = value.replace('"', '\\"')
+                value = value.replace('_', ' ')
 
             else:
                 try:
