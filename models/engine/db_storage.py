@@ -34,6 +34,7 @@ class DBStorage:
         """
         Retrieves all object depending on cls name
         """
+        from models.base_model import Base
         if cls:
             objs = self.__session.query(cls).all()
         else:
