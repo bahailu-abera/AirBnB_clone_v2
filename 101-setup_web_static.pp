@@ -1,3 +1,5 @@
+# Puppet manifest to setup web server
+
 file { '/data':
   ensure => 'directory',
   owner  => 'ubuntu',
