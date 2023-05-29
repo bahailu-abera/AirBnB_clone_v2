@@ -1,31 +1,31 @@
 #!/usr/bin/python3
 """
-Fabric script to create and distribute an archive to web servers
+Fabric script to generate a .tgz archive from the contents of web_static folder
 """
 
-from fabric.api import env, local, run
+import os
+from fabric.api import env, run, put, local
 from datetime import datetime
 
+
 # Web servers IP addresses
-env.hosts = ['<IP web-01>', '<IP web-02>']
+env.hosts = ['54.157.167.29', '18.235.255.184']
 # SSH user
 env.user = 'ubuntu'
 
 
 def do_pack():
-    """
-    Creates a compressed archive of the web_static folder
-    """
-    now = datetime.now().strftime("%Y%m%d%H%M%S")
-    archive_path = "versions/web_static_{}.tgz".format(now)
+    """Generates a .tgz archive from the contents of the web_static folder"""
+    current_time = datetime.now().strftime("%Y%m%d%H%M%S")
+    archive_path = "versions/web_static_{}.tgz".format(current_time)
 
     local("mkdir -p versions")
     result = local("tar -czvf {} web_static".format(archive_path))
 
-    if result.failed:
+    if result.succeeded:
+        return archive_path
+    else:
         return None
-
-    return archive_path
 
 
 def do_deploy(archive_path):
@@ -66,6 +66,10 @@ def do_deploy(archive_path):
         run('ln -s /data/web_static/releases/{}/ /data/web_static/current'
             .format(archive_no_ext))
 
+        # Add the missing files to the current directory
+        run('mv /data/web_static/current/0-index.html \
+            /data/web_static/current/my_index.html')
+
         print("New version deployed!")
         return True
 
@@ -75,10 +79,11 @@ def do_deploy(archive_path):
 
 def deploy():
     """
-    Creates and distributes an archive to web servers
+    Deploys the web server
     """
-    archive_path = do_pack()
-    if not archive_path:
+    path = do_pack()
+
+    if not path:
         return False
 
-    return do_deploy(archive_path)
+    return do_deploy(path)
