@@ -92,8 +92,6 @@ def do_clean(number=0):
     number = int(number)
     if number < 1:
         number = 1
-    else:
-        number += 1
 
     with lcd("versions"):
         local("ls -1t | tail -n +{} | xargs -I {{}} rm -- {{}}"
