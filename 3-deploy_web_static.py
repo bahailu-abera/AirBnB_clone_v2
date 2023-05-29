@@ -66,10 +66,6 @@ def do_deploy(archive_path):
         run('ln -s /data/web_static/releases/{}/ /data/web_static/current'
             .format(archive_no_ext))
 
-        # Add the missing files to the current directory
-        run('mv /data/web_static/current/0-index.html \
-            /data/web_static/current/my_index.html')
-
         print("New version deployed!")
         return True
 
