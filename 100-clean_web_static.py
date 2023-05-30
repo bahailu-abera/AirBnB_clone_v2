@@ -95,11 +95,11 @@ def do_clean(number=0):
 
     with lcd("versions"):
         local("ls -1t | tail -n +{} | xargs -I {{}} rm -- {{}}"
-              .format(number))
+              .format(number + 1))
 
     with cd("/data/web_static/releases"):
         run("ls -1t | tail -n +{} | xargs -I {{}} rm -rf -- {{}}"
-            .format(number))
+            .format(number + 1))
 
-        run("ls -1t /data/web_static/releases | tail -n +{}"
-            .format(number))
+        run("ls -1t /data/web_static/releases | tail -n +{} | wc -l"
+            .format(number + 1))
