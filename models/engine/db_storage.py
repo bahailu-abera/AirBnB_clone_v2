@@ -42,7 +42,8 @@ class DBStorage:
             for c in Base.__subclasses__():
                 objs += self.__session.query(c).all()
 
-        return {"{}.{}".format(type(obj).__name__, obj.id): obj for obj in objs}
+        return {"{}.{}".format(type(obj).__name__, obj.id):
+                obj for obj in objs}
 
     def new(self, obj):
         """ Adds the new object to the Storage """
@@ -67,9 +68,9 @@ class DBStorage:
         from models.place import Place
         from models.review import Review
 
-
         Base.metadata.create_all(self.__engine)
-        session_maker = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        session_maker = sessionmaker(bind=self.__engine,
+                                     expire_on_commit=False)
         Session = scoped_session(session_maker)
         self.__session = Session()
 
